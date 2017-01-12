@@ -1,0 +1,128 @@
+@media only screen and (width: 1440px) {
+    html, body{ font-size: 20px; }
+}
+
+@media only screen and (width: 768px) {
+    html, body{ font-size: 10.6667px; }
+}
+
+@media only screen and (width: 720px) {
+    html, body{ font-size: 10px; }
+}
+
+@media only screen and (width: 600px) {
+    html, body{ font-size: 8.3333px; }
+}
+
+.bb10player_box {
+    position: relative;
+    width: 100%;
+    font-size: 0;
+}
+.bb10player_box:after {
+    display: inline-block;
+    width: 100%;
+    padding-bottom: 100%;
+    content: '';
+}
+.bb10player {
+    font-size: 2.5rem;
+    position: absolute;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: url(../img/bb10player-default-bg.png) no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+    overflow: hidden;
+}
+.bb10player_bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: url(../img/bb10player-bottom-bg.png) no-repeat;
+    -webkit-background-size: 100% 100%;
+    background-size: 100% 100%;
+}
+.bb10player_controls {
+    width: 45%;
+    height: 30%;
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bb10player_controls_prev, 
+.bb10player_controls_next {
+    width: 30%;
+    height: 80%;
+    margin-top: 3.5%;
+    border-radius: 35%;
+    background-size: 35% 35% !important;
+}
+
+.bb10player_controls_prev {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background: url(../img/bb10player-prev.png) no-repeat center center;
+}
+.bb10player_controls_play {
+    width: 40%;
+    height: 100%;
+    background: url(../img/bb10player-stop.png) no-repeat center center;
+    background-size: 50% 50%;
+    border-radius: 25%;
+    box-shadow: 1rem 0 0 0 #201F22, -1rem 0 0 0 #201F22;
+}
+.bb10player_controls_next {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background: url(../img/bb10player-next.png) no-repeat center center;
+}
+.bb10player_controls_a {
+    position: relative;
+    display: block;
+    float: left;
+    background-color: #201F22;
+}
+.bb10player_progress {
+    position: absolute;
+    width: 90%;
+    height: 1.5rem;
+    border-radius: 1.5rem;
+    background-color: #201F22;
+    top: 32%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.bb10player_time {
+    position: absolute;
+    color: #fff;
+    font-size: 2rem;
+    letter-spacing: 0.2rem;
+    top: 20%;
+    width: 100%;
+    text-align: center;
+}
+.bb10player_title {
+    position: absolute;
+    width: 100%;
+    height: 2.5rem;
+    line-height: 2.5rem;
+    top: 42%;
+    padding: 0 5rem;
+    color: #fff;
+    font-size: 2.2rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-align: center;
+}
+.bb10player_progress_time {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
