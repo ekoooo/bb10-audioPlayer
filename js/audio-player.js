@@ -12,6 +12,8 @@ var BB10AudioPlayer = {
     itv: null,
     touching: false,
     isDebug: true,
+    updateItvTime: 1000,
+    DEFAULT_COVER: 'img/bb10player-default-bg.png',
 
     init: function(data) {
         this.data = data;
@@ -89,7 +91,7 @@ var BB10AudioPlayer = {
             BB10AudioPlayer.debug('初始化信息 ...');
             
             var duration = that.getDuration();
-            var title = that.data[that.currentPlayIndex].title;
+            var title = that.data.list[that.currentPlayIndex].title;
 
             currentTimePanel.text('00:00');
             totalTimePanel.text(that.parseTime(duration));
@@ -100,7 +102,7 @@ var BB10AudioPlayer = {
     },
 
     playCurrent: function() {
-        this.setSrc(this.data[this.currentPlayIndex].url);
+        this.setSrc(this.data.list[this.currentPlayIndex].url);
     },
 
     itvUpdate: function(currentTimePanel, progressTimeBar) {
@@ -130,6 +132,7 @@ var BB10AudioPlayer = {
     initUI: function(container) {
         var tpl = ['<div class="bb10player_box">',
             '    <div class="bb10player">',
+            '        <div class="bb10player_cover"></div>' + 
             '        <div class="bb10player_bottom">',
             '            <div class="bb10player_progress">',
             '                <input type="range" class="bb10player_progress_time" min="0" max="0" step="1" value="0">',
@@ -166,6 +169,7 @@ var BB10AudioPlayer = {
 
         var currentTimePanel = container.find('.bb10player_current_time'), 
             progressTimeBar = container.find('.bb10player_progress_time');
+            coverPanel = container.find('.bb10player_cover');
 
         // 初始化数据
         var duration = that.getDuration();
@@ -173,13 +177,18 @@ var BB10AudioPlayer = {
         if(!isNaN(duration)) {
             var totalTimePanel = container.find('.bb10player_total_time'), 
                 titlePanel = container.find('.bb10player_title'),
-                title = that.data[that.currentPlayIndex].title;
+                title = that.data.list[that.currentPlayIndex].title;
 
             currentTimePanel.text('00:00');
             totalTimePanel.text(that.parseTime(duration));
             titlePanel.text(title);
             progressTimeBar.val(0).attr('max', duration);
         }
+
+        // 初始化 cover
+        coverPanel.css({
+            backgroundImage: 'url(' + (this.data.cover || this.DEFAULT_COVER) + ')'
+        });
 
         // 监听 UI 事件
         this.attachUIEvent(container);
@@ -189,7 +198,7 @@ var BB10AudioPlayer = {
 
         that.itv = window.setInterval(function() {
             that.itvUpdate(currentTimePanel, progressTimeBar);
-        }, 1000);
+        }, this.updateItvTime);
 
         // 保存 container, 可用于销毁 UI
         this.container = container;
@@ -223,7 +232,7 @@ var BB10AudioPlayer = {
 
     // 下一首
     next: function() {
-        if(this.currentPlayIndex === this.data.length - 1) {
+        if(this.currentPlayIndex === this.data.list.length - 1) {
             return;
         }
         this.currentPlayIndex += 1;

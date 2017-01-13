@@ -29,16 +29,21 @@
     <script src="js/lib/touch.js"></script>
     <script src="js/audio-player.js"></script>
     <script>
-        BB10AudioPlayer.init([{
-            url: 'http://fdfs.xmcdn.com/group22/M05/67/78/wKgJM1h0sJWgLZxMAFBfGylPtn4949.mp3',
-            title: '摸金天师'
-        },{
-            url: 'http://fdfs.xmcdn.com/group21/M09/61/01/wKgJKFhzwJfBANisAJiidsGEu8s250.mp3',
-            title: 'wKgJKFhzwJfBANisAJiidsGEu8s250'
-        },{
-            url: 'http://fdfs.xmcdn.com/group21/M0B/60/31/wKgJKFhzpOnhuSZiAUNBpQ1Mt88003.mp3',
-            title: 'wKgJKFhzpOnhuSZiAUNBpQ1Mt88003'
-        }]);
+        BB10AudioPlayer.init({
+            list: [{
+                url: 'http://fdfs.xmcdn.com/group22/M05/67/78/wKgJM1h0sJWgLZxMAFBfGylPtn4949.mp3',
+                title: '摸金天师'
+            },{
+                url: 'http://fdfs.xmcdn.com/group21/M09/61/01/wKgJKFhzwJfBANisAJiidsGEu8s250.mp3',
+                title: 'wKgJKFhzwJfBANisAJiidsGEu8s250'
+            },{
+                url: 'http://fdfs.xmcdn.com/group21/M0B/60/31/wKgJKFhzpOnhuSZiAUNBpQ1Mt88003.mp3',
+                title: 'wKgJKFhzpOnhuSZiAUNBpQ1Mt88003'
+            }],
+            cover: ''
+        });
+
+        BB10AudioPlayer.initUI($('.d1'));
 
         $('#btn1, #btn2').on('click', function(e) {
             var id = $(e.currentTarget).attr('id');
