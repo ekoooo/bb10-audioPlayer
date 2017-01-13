@@ -28,9 +28,10 @@ var BB10AudioPlayer = {
     attachEvent: function() {
         var that = this;
 
-        this.player.onended = function(e) {
+        $(this.player).on('ended', function(e) {
+            BB10AudioPlayer.debug('onended ...');
             that.next();
-        };
+        });
     },
 
     // 更新播放列表, 提供外部调用
@@ -87,8 +88,11 @@ var BB10AudioPlayer = {
             that.next();
         });
 
-        // 初始化信息
-        this.player.onloadedmetadata = function(e) {
+        /*
+         * 注意黑莓不支持 `this.player.onloadedmetadata = function(e) {}` 这种监听方式
+         * 初始化信息
+         */
+        $(this.player).on('loadedmetadata', function(e) {
             BB10AudioPlayer.debug('初始化信息 ...');
             
             var duration = that.getDuration();
@@ -99,24 +103,31 @@ var BB10AudioPlayer = {
             titlePanel.text(title);
             progressTimeBar.val(0);
             progressTimeBar.attr('max', duration);
-        };
+        });
 
-        this.player.onplaying = function(e) {
+        $(this.player).on('playing', function(e) {
+            BB10AudioPlayer.debug('onplaying ...');
+
             that.updateCoverStatus();
             that.updatePlayIcon();
-        }
+        });
 
-        this.player.onpause = function(e) {
+        $(this.player).on('pause', function(e) {
+            BB10AudioPlayer.debug('onpause ...');
+
             that.updateCoverStatus();
             that.updatePlayIcon();
-        }
+        });
     },
 
     updateCoverStatus: function() {
-        this.container.find('.bb10player_cover').css({
-            backgroundImage: 'url(' + (this.data.cover || this.DEFAULT_COVER) + ')',
-            animationPlayState: this.isPaused() ? 'paused' : 'running'
+        var cover = this.container.find('.bb10player_cover');
+
+        cover.css({
+            backgroundImage: 'url(' + (this.data.cover || this.DEFAULT_COVER) + ')'
         });
+
+        cover.get(0).style['-webkit-animation-play-state'] = this.isPaused() ? 'paused' : 'running';
     },
 
     updatePlayIcon: function() {
