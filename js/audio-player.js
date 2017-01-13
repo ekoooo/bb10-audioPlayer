@@ -39,8 +39,9 @@ var BB10AudioPlayer = {
         this.currentPlayIndex = currentPlayIndex;
     },
 
-    attachUIEvent: function(container) {
-        var that = this;
+    attachUIEvent: function() {
+        var that = this,
+            container = this.container;
 
         var currentTimePanel = container.find('.bb10player_current_time'), 
             totalTimePanel = container.find('.bb10player_total_time'), 
@@ -99,6 +100,29 @@ var BB10AudioPlayer = {
             progressTimeBar.val(0);
             progressTimeBar.attr('max', duration);
         };
+
+        this.player.onplaying = function(e) {
+            that.updateCoverStatus();
+            that.updatePlayIcon();
+        }
+
+        this.player.onpause = function(e) {
+            that.updateCoverStatus();
+            that.updatePlayIcon();
+        }
+    },
+
+    updateCoverStatus: function() {
+        this.container.find('.bb10player_cover').css({
+            backgroundImage: 'url(' + (this.data.cover || this.DEFAULT_COVER) + ')',
+            animationPlayState: this.isPaused() ? 'paused' : 'running'
+        });
+    },
+
+    updatePlayIcon: function() {
+        this.container.find('.bb10player_controls_play').css({
+            backgroundImage: this.isPaused() ? 'url(img/bb10player-play.png)' : 'url(img/bb10player-stop.png)'
+        });
     },
 
     playCurrent: function() {
@@ -130,17 +154,20 @@ var BB10AudioPlayer = {
 
     // 可供外部调用
     initUI: function(container) {
+        // 保存 container, 可用于销毁 UI
+        this.container = container;
+
         var tpl = ['<div class="bb10player_box">',
             '    <div class="bb10player">',
             '        <div class="bb10player_cover"></div>' + 
             '        <div class="bb10player_bottom">',
-            '            <div class="bb10player_progress">',
-            '                <input type="range" class="bb10player_progress_time" min="0" max="0" step="1" value="0">',
-            '            </div>',
             '            <div class="bb10player_time">',
             '                <span class="bb10player_current_time">00:00</span>',
             '                <span>/</span>',
             '                <span class="bb10player_total_time">00:00</span>',
+            '            </div>',
+            '            <div class="bb10player_progress">',
+            '                <input type="range" class="bb10player_progress_time" min="0" max="0" step="1" value="0">',
             '            </div>',
             '            <div class="bb10player_title"></div>',
             '            <div class="bb10player_controls">',
@@ -153,23 +180,20 @@ var BB10AudioPlayer = {
             '</div>'].join("");
 
         container.append(tpl);
-
-        /*
-         * 判断当前播放状态, 更新 播放/暂停 按钮图标
-         * 默认是播放状态, 即显示的暂停图片
-         * 如果是暂停状态则更新为播放图片
-         */
-        if(this.isPaused()) {
-            container.find('.bb10player_controls_play').css({
-                backgroundImage: 'url(img/bb10player-play.png)'
-            });
-        }
+        
+        this.updateCoverStatus();
+        this.updatePlayIcon();
 
         var that = this;
 
         var currentTimePanel = container.find('.bb10player_current_time'), 
             progressTimeBar = container.find('.bb10player_progress_time');
             coverPanel = container.find('.bb10player_cover');
+
+        // 初始化 cover
+        coverPanel.css({
+            backgroundImage: 'url(' + (this.data.cover || this.DEFAULT_COVER) + ')'
+        });
 
         // 初始化数据
         var duration = that.getDuration();
@@ -185,13 +209,8 @@ var BB10AudioPlayer = {
             progressTimeBar.val(0).attr('max', duration);
         }
 
-        // 初始化 cover
-        coverPanel.css({
-            backgroundImage: 'url(' + (this.data.cover || this.DEFAULT_COVER) + ')'
-        });
-
         // 监听 UI 事件
-        this.attachUIEvent(container);
+        this.attachUIEvent();
 
         // 实时更新播放信息
         window.clearInterval(that.itv);
@@ -199,9 +218,6 @@ var BB10AudioPlayer = {
         that.itv = window.setInterval(function() {
             that.itvUpdate(currentTimePanel, progressTimeBar);
         }, this.updateItvTime);
-
-        // 保存 container, 可用于销毁 UI
-        this.container = container;
     },
 
     // 设置播放器参数

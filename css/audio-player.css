@@ -1,16 +1,16 @@
-@media only screen and (width: 1440px) {
+@media only screen and (max-width: 1440px) {
     html, body{ font-size: 20px; }
 }
 
-@media only screen and (width: 768px) {
+@media only screen and (max-width: 768px) {
     html, body{ font-size: 10.6667px; }
 }
 
-@media only screen and (width: 720px) {
+@media only screen and (max-width: 720px) {
     html, body{ font-size: 10px; }
 }
 
-@media only screen and (width: 600px) {
+@media only screen and (max-width: 600px) {
     html, body{ font-size: 8.3333px; }
 }
 
@@ -31,11 +31,11 @@
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    /*background: url(../img/bb10player-default-bg.png) no-repeat;
-    -webkit-background-size: 100% 100%;
-    background-size: 100% 100%;*/
+    /*border-radius: 50%;*/
     overflow: hidden;
+    z-index: 1;
+
+    background: #252C36;
 }
 .bb10player_bottom {
     position: absolute;
@@ -51,7 +51,7 @@
     width: 45%;
     height: 30%;
     position: absolute;
-    top: 55%;
+    top: 65%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -95,7 +95,7 @@
     height: 1.5rem;
     border-radius: 1.5rem;
     background-color: #201F22;
-    top: 32%;
+    top: 35%;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -113,7 +113,7 @@
     width: 100%;
     height: 2.5rem;
     line-height: 2.5rem;
-    top: 42%;
+    top: 45%;
     padding: 0 5rem;
     color: #fff;
     font-size: 2.2rem;
@@ -125,6 +125,19 @@
     display: block;
     width: 100%;
     height: 100%;
+
+    -webkit-appearance: none;
+    background-color: #fff;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+.bb10player_progress_time::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    top: -5px;
+    height: 1.5rem;
+    width: 1rem;
+    background: none repeat scroll 0 0 #201F22;
+    -webkit-box-shadow: 0 -1px 1px black inset;
 }
 .bb10player_cover {
     position: absolute;
@@ -133,10 +146,11 @@
     -webkit-background-size: 100% 100%;
     background-size: 100% 100%;
     border-radius: 50%;
-    z-index: -1;
 
     -webkit-animation: player_cover_rotate 20s linear infinite;
     animation: player_cover_rotate 20s linear infinite;
+
+    box-shadow: 0 0 4rem 0.5rem rgba(79,85,93,1);
 }
 
 @keyframes player_cover_rotate {
