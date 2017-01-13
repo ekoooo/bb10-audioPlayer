@@ -91,11 +91,8 @@ var BB10AudioPlayer = {
             var duration = that.getDuration();
             var title = that.data[that.currentPlayIndex].title;
 
-            var m = Math.floor(duration / 60);
-            var s = Math.floor(duration % 60);
-
             currentTimePanel.text('00:00');
-            totalTimePanel.text(that.parseTime(m, s));
+            totalTimePanel.text(that.parseTime(duration));
             titlePanel.text(title);
             progressTimeBar.val(0);
             progressTimeBar.attr('max', duration);
@@ -108,16 +105,17 @@ var BB10AudioPlayer = {
 
     itvUpdate: function(currentTimePanel, progressTimeBar) {
         var currentTime = this.getCurrentTime();
-        var m = Math.floor(currentTime / 60);
-        var s = Math.floor(currentTime % 60);
 
-        currentTimePanel.text(this.parseTime(m, s))
+        currentTimePanel.text(this.parseTime(currentTime))
         if(!this.touching) {
             progressTimeBar.val(currentTime);
         }
     },
 
-    parseTime: function(m, s) {
+    parseTime: function(time) {
+        var m = Math.floor(time / 60);
+        var s = Math.floor(time % 60);
+
         m = m < 10 ? '0' + m : m;
         s = s < 10 ? '0' + s : s;
 
@@ -177,11 +175,8 @@ var BB10AudioPlayer = {
                 titlePanel = container.find('.bb10player_title'),
                 title = that.data[that.currentPlayIndex].title;
 
-            var m = Math.floor(duration / 60);
-            var s = Math.floor(duration % 60);
-
             currentTimePanel.text('00:00');
-            totalTimePanel.text(that.parseTime(m, s));
+            totalTimePanel.text(that.parseTime(duration));
             titlePanel.text(title);
             progressTimeBar.val(0).attr('max', duration);
         }
